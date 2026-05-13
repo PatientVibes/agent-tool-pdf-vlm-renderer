@@ -27,15 +27,19 @@ def pdf_to_page_pngs(
     scale = dpi / 72.0
     saved: list[Path] = []
 
-    for i in range(len(pdf)):
-        page = pdf[i]
-        bitmap = page.render(scale=scale)
-        pil_image = bitmap.to_pil()
-        out_path = out_dir / f"{pdf_path.stem}_{i + 1}.png"
-        pil_image.save(str(out_path))
-        saved.append(out_path)
-
-    pdf.close()
+    try:
+        for i in range(len(pdf)):
+            page = pdf[i]
+            try:
+                bitmap = page.render(scale=scale)
+                pil_image = bitmap.to_pil()
+                out_path = out_dir / f"{pdf_path.stem}_{i + 1}.png"
+                pil_image.save(str(out_path))
+                saved.append(out_path)
+            finally:
+                page.close()
+    finally:
+        pdf.close()
     return saved
 
 

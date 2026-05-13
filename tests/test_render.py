@@ -43,6 +43,14 @@ def test_crop_region(tiny_pdf: Path, tmp_path: Path):
     assert cropped_img.size[0] <= w // 2 + 10
 
 
+def test_crop_region_zero_area_returns_none(tiny_pdf: Path, tmp_path: Path):
+    """Zero-area bounding box with pad_px=0 should return None."""
+    pngs = pdf_to_page_pngs(tiny_pdf, tmp_path, dpi=72)
+    box = BoundingBox(x_min=50, y_min=50, x_max=50, y_max=50)
+    result = crop_region(pngs[0], box, tmp_path / "empty.png", pad_px=0)
+    assert result is None
+
+
 def test_preprocess_for_vlm(tiny_pdf: Path, tmp_path: Path):
     pngs = pdf_to_page_pngs(tiny_pdf, tmp_path, dpi=72)
     out = preprocess_for_vlm(pngs[0], tmp_path / "preprocessed.png")
