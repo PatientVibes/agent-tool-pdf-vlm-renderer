@@ -1,0 +1,29 @@
+[project]
+name = "agent-tool-pdf-vlm-renderer"
+version = "0.1.0"
+description = "Render PDF pages to VLM-ready PNGs: pypdfium2 rasterization, autocontrast preprocessing, base64 inline encoding, bounding-box crop and debug-overlay helpers."
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Chris Moore" }]
+dependencies = [
+    "pypdfium2>=4.0",
+    "Pillow>=10.0",
+    "pydantic>=2.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "reportlab>=4.0",
+]
+
+[build-system]
+requires = ["setuptools>=68.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pdf_vlm_renderer*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
